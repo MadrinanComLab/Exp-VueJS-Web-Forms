@@ -12,6 +12,13 @@
             <option value="designer">Web Designer</option>
         </select>
 
+        <label>Skills:</label>
+        <input type="text" v-model="tempSkill" @keyup.alt="addSkill"><!--/ FUNCTION INSIDE @keyup.alt WILL FIRES WHEN ALT WAS PRESS PLUS THE CONDITION INSIDE THIS FUNCTION /-->
+
+        <div v-for="skill in skills" :key="skill" class="pill">
+            <span @click="removeSkill(skill)">{{ skill }}</span>
+        </div>
+
         <!--/ FIRST WAY OF USING v-model TO A CHECKBOX /-->
         <div class="terms">
             <input type="checkbox" required v-model="agreed">
@@ -47,6 +54,31 @@ export default {
             role: "developer", // THIS WILL SET AS DEFAULT VALUE OF COMBO BOX (<select>) TO Web Developer
             agreed: false,
             names: [],
+            tempSkill: "",
+            skills: []
+        }
+    },
+
+    methods: {
+        addSkill(e) {
+            if (e.key === "," && this.tempSkill)
+            {
+                if (!this.skills.includes(this.tempSkill)) // .replace(",", "")
+                {
+                    this.skills.push(this.tempSkill)
+                }
+                this.tempSkill = ""
+            }
+        },
+
+        removeSkill(skill) {
+            // THIS IS A QUICK WAY OF REMOVING ITEM IN AN ARRAY.
+            // IF YOU WANT TO KNOW MORE ABOUT FILTER FUNCTION OF AN ARRAY, HERE IS THE LINK:
+            // https://www.w3schools.com/jsref/jsref_filter.asp
+            
+            this.skills = this.skills.filter((item) => {
+                return skill !== item
+            })
         }
     }
 }
@@ -88,5 +120,18 @@ export default {
         margin: 0 10px 0 0;
         position: relative;
         top: 2px;
+    }
+
+    .pill {
+        display: inline-block;
+        margin: 20px 10px 0 0;
+        padding: 6px 12px;
+        background: #EEE;
+        border-radius: 20px;
+        font-size: 12px;
+        letter-spacing: 1px;
+        font-weight: bold;
+        color: #777;
+        cursor: pointer;
     }
 </style>
